@@ -14,7 +14,6 @@ app.get('/tasks', (req, res) => {
 
 app.get('/tasks/:id', (req, res) => {
     const id = req.params.id;
-    console.log(tasksList)
     const checkTask = tasksList.find(task => task.id === parseInt(id));
 
     if(!checkTask){
