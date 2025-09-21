@@ -6,7 +6,7 @@ const port = 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const tasksList = JSON.parse(fs.readFileSync('./task.json', 'utf-8')).tasks;
+const tasksList = JSON.parse(fs.readFile('./task.json', 'utf-8')).tasks;
 
 app.get('/tasks', (req, res) => {
     res.send(tasksList);
@@ -30,21 +30,21 @@ app.post('/tasks', (req, res) => {
         res.status(400).send("Title & description should not be empty");
         return;
     }
-    reqBody.id = tasksList[tasksList.length-1].id+1;
+    reqBody.id = tasksList.length ? tasksList[tasksList.length-1].id+1: '';
     tasksList.push(reqBody);
-    res.send("creted")
+    res.send("created")
 })
 
 app.put('/tasks/:id', (req, res) => {
-    if(req.params.id * 1 > tasksList.length){
+    if(parseInt(req.params.id) > tasksList.length){
         res.status(404).send("Not found");
         return;
     }
-    res.send("updted")
+    res.send("updated")
 })
 
 app.delete('/tasks/:id', (req, res) => {
-    if(req.params.id * 1 > tasksList.length){
+    if(parseInt(req.params.id) > tasksList.length){
         res.status(404).send("Not found");
         return;
     }
