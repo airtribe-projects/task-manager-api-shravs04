@@ -31,7 +31,7 @@ app.post('/tasks', (req, res) => {
     }
     reqBody.id = tasksList.length ? tasksList[tasksList.length-1].id+1: '';
     tasksList.push(reqBody);
-    res.send("created")
+    res.send(reqBody)
 })
 
 app.put('/tasks/:id', (req, res) => {
@@ -39,7 +39,11 @@ app.put('/tasks/:id', (req, res) => {
         res.status(404).send("Not found");
         return;
     }
-    res.send("updated")
+    const checkTask = tasksList.find(task => task.id === parseInt(req.params.id));
+    checkTask.title = req.params.title;
+    checkTask.description = req.params.description;
+    checkTask.completed = req.params.completed;
+    res.send(checkTask)
 })
 
 app.delete('/tasks/:id', (req, res) => {
